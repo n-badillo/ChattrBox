@@ -3,6 +3,11 @@ var http = require('http');
 var fs = require('fs');
 var extract = require('./extract');
 
+var handleError = function (err,res) {
+  res.writeHead(404);
+  res.end();
+};
+
 
 var server = http.createServer(function (req, res){
   // http.createServe takes in one argument, a function. This function is called for every HTTP request.
@@ -11,11 +16,13 @@ var server = http.createServer(function (req, res){
   // Prints out this statement when request was received.
   
   var filePath = extract(req.url);
-  
+
   fs.readFile(filePath, function(err, data){
-    // The readFile method takes a file name and a callback; 
-    // inside the callback you send the contents of the file instead of the HTML test using res.end
-    res.end(data);
+    if(err) {
+      handleError(err, res);
+      return;
+    } else {
+    res.end(data); }
   });
 });
 
