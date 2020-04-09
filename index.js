@@ -1,7 +1,8 @@
-var http = require('http');
-// Using node.js' built-in function to access the http module included with Node.
+var http = require('http');    // Using node.js' built-in function to access the http module included with Node.
 var fs = require('fs');
 var extract = require('./extract');
+var wss = require('./websockets-server');
+
 
 var handleError = function (err,res) {
   res.writeHead(404);
