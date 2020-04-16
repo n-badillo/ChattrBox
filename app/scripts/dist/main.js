@@ -117,13 +117,57 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"app.js":[function(require,module,exports) {
+})({"ws-client.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var socket;
+
+function init(url) {
+  socket = new WebSocket(url);
+  console.log('connecting...');
+}
+
+function registerOpenHandler(handlerFunction) {
+  socket.onopen = function () {
+    console.log('open');
+    handlerFunction();
+  };
+}
+
+function registerMessageHandler(handlerFunction) {
+  socket.onmessage = function (e) {
+    console.log('message', e.data);
+    var data = JSON.parse(e.data);
+    handlerFunction(data);
+  };
+}
+
+function sendMessage(payload) {
+  socket.send(JSON.stringify(payload));
+}
+
+var _default = {
+  init: init,
+  registerOpenHandler: registerOpenHandler,
+  registerMessageHandler: registerMessageHandler,
+  sendMessage: sendMessage
+};
+exports.default = _default;
+},{}],"app.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _wsClient = _interopRequireDefault(require("./ws-client"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -134,7 +178,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var ChatApp = function ChatApp() {
   _classCallCheck(this, ChatApp);
 
-  console.log('Hello ES6');
+  _wsClient.default.init('ws://localhost:3001');
+
+  _wsClient.default.registerOpenHandler(function () {
+    var message = new ChatMessage({
+      message: 'pow!'
+    });
+
+    _wsClient.default.sendMessage(message.serialize());
+  });
+
+  _wsClient.default.registerMessageHandler(function (data) {
+    console.log(data);
+  });
 };
 
 var ChatMessage = /*#__PURE__*/function () {
@@ -168,7 +224,7 @@ var ChatMessage = /*#__PURE__*/function () {
 
 var _default = ChatApp;
 exports.default = _default;
-},{}],"main.js":[function(require,module,exports) {
+},{"./ws-client":"ws-client.js"}],"main.js":[function(require,module,exports) {
 "use strict";
 
 var _app = _interopRequireDefault(require("./app"));
