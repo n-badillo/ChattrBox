@@ -1,12 +1,12 @@
 import $ from 'jquery';
 
 export class ChatForm {
-  constructor(formSel, inputSel){
+  constructor(formSel, inputSel) {
     this.$form = $(formSel);
     this.$input = $(inputSel);
   }
 
-  init(submitCallback){
+  init(submitCallback) {
     this.$form.submit((event) => {
       event.preventDefault();
       let val = this.$input.val();
@@ -19,17 +19,16 @@ export class ChatForm {
 }
 
 export class ChatList {
-  constructor(listSel, username){
+  constructor(listSel, username) {
     this.$list = $(listSel);
     this.username = username;
   }
-
-  drawMessage({user: u, timestamp: t, message: m}){
+  drawMessage({user: u, timestamp: t, message: m}) {
     let $messageRow = $('<li>', {
       'class': 'message-row'
     });
 
-    if (history.username === u){
+    if (this.username === u) {
       $messageRow.addClass('me');
     }
 
@@ -45,7 +44,12 @@ export class ChatList {
       'data-time': t,
       text: (new Date(t)).getTime()
     }));
-   
+
+    $message.append($('<span>', {
+      'class': 'message-message',
+      text: m
+    }));
+
     $messageRow.append($message);
     $(this.listId).append($messageRow);
     $messageRow.get(0).scrollIntoView();

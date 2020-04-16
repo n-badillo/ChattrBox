@@ -11312,7 +11312,7 @@ var ChatList = /*#__PURE__*/function () {
         'class': 'message-row'
       });
 
-      if (history.username === u) {
+      if (this.username === u) {
         $messageRow.addClass('me');
       }
 
@@ -11325,6 +11325,10 @@ var ChatList = /*#__PURE__*/function () {
         'class': 'timestamp',
         'data-time': t,
         text: new Date(t).getTime()
+      }));
+      $message.append((0, _jquery.default)('<span>', {
+        'class': 'message-message',
+        text: m
       }));
       $messageRow.append($message);
       (0, _jquery.default)(this.listId).append($messageRow);
@@ -11357,7 +11361,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FORM_SELECTOR = '[data-chat="chat-form"]';
-var INPUT_SELECTOR = '[data-chat ="message-input"]';
+var INPUT_SELECTOR = '[data-chat="message-input"]';
 var LIST_SELECTOR = '[data-chat="message-list"]';
 
 var ChatApp = function ChatApp() {
@@ -11453,7 +11457,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52047" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52142" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
