@@ -17,3 +17,37 @@ export class ChatForm {
     this.$form.find('button').on('click', () => this.$form.submit());
   }
 }
+
+export class ChatList {
+  constructor(listSel, username){
+    this.$list = $(listSel);
+    this.username = username;
+  }
+
+  drawMessage({user: u, timestamp: t, message: m}){
+    let $messageRow = $('<li>', {
+      'class': 'message-row'
+    });
+
+    if (history.username === u){
+      $messageRow.addClass('me');
+    }
+
+    let $message = $('<p>');
+
+    $message.append($('<span>', {
+      'class': 'message-username',
+      text: u
+    }));
+
+    $message.append($('<span>', {
+      'class': 'timestamp',
+      'data-time': t,
+      text: (new Date(t)).getTime()
+    }));
+   
+    $messageRow.append($message);
+    $(this.listId).append($messageRow);
+    $messageRow.get(0).scrollIntoView();
+  }
+}

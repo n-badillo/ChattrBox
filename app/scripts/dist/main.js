@@ -11249,7 +11249,7 @@ return jQuery;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ChatForm = void 0;
+exports.ChatList = exports.ChatForm = void 0;
 
 var _jquery = _interopRequireDefault(require("jquery"));
 
@@ -11293,6 +11293,49 @@ var ChatForm = /*#__PURE__*/function () {
 }();
 
 exports.ChatForm = ChatForm;
+
+var ChatList = /*#__PURE__*/function () {
+  function ChatList(listSel, username) {
+    _classCallCheck(this, ChatList);
+
+    this.$list = (0, _jquery.default)(listSel);
+    this.username = username;
+  }
+
+  _createClass(ChatList, [{
+    key: "drawMessage",
+    value: function drawMessage(_ref) {
+      var u = _ref.user,
+          t = _ref.timestamp,
+          m = _ref.message;
+      var $messageRow = (0, _jquery.default)('<li>', {
+        'class': 'message-row'
+      });
+
+      if (history.username === u) {
+        $messageRow.addClass('me');
+      }
+
+      var $message = (0, _jquery.default)('<p>');
+      $message.append((0, _jquery.default)('<span>', {
+        'class': 'message-username',
+        text: u
+      }));
+      $message.append((0, _jquery.default)('<span>', {
+        'class': 'timestamp',
+        'data-time': t,
+        text: new Date(t).getTime()
+      }));
+      $messageRow.append($message);
+      (0, _jquery.default)(this.listId).append($messageRow);
+      $messageRow.get(0).scrollIntoView();
+    }
+  }]);
+
+  return ChatList;
+}();
+
+exports.ChatList = ChatList;
 },{"jquery":"../../../node_modules/jquery/dist/jquery.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
@@ -11315,6 +11358,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var FORM_SELECTOR = '[data-chat="chat-form"]';
 var INPUT_SELECTOR = '[data-chat ="message-input"]';
+var LIST_SELECTOR = '[data-chat="message-list"]';
 
 var ChatApp = function ChatApp() {
   var _this = this;
@@ -11322,6 +11366,7 @@ var ChatApp = function ChatApp() {
   _classCallCheck(this, ChatApp);
 
   this.chatForm = new _dom.ChatForm(FORM_SELECTOR, INPUT_SELECTOR);
+  this.chatList = new _dom.ChatList(LIST_SELECTOR, 'wonderwoman');
 
   _wsClient.default.init('ws://localhost:3001');
 
@@ -11335,6 +11380,9 @@ var ChatApp = function ChatApp() {
 
   _wsClient.default.registerMessageHandler(function (data) {
     console.log(data);
+    var message = new ChatMessage(data);
+
+    _this.chatList.drawMessage(message.serialize());
   });
 };
 
@@ -11405,7 +11453,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50167" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52047" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
