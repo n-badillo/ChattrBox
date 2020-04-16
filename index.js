@@ -2,7 +2,7 @@ var http = require('http');    // Using node.js' built-in function to access the
 var fs = require('fs');
 var extract = require('./extract');
 var wss = require('./websockets-server');
-var errorPage = require('./error_module');
+//var errorPage = require('./error_module');
 var mime = require('mime');  // CH 15.  Silver Challenge
 
 
