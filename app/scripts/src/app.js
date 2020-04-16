@@ -4,4 +4,4 @@ class ChatApp{
   }
 }
 
-new ChatApp();
+export default ChatApp;

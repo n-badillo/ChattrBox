@@ -6,7 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build": "parcel build app/scripts/src/main.js -d app/scripts/dist/",
+    "watch": "parcel watch app/scripts/src/main.js -d app/scripts/dist/"
+  },
+  "browserify":{
+    "transform": [
+      ["babelify", {"presets": ["es2015"], "sourceMap": true}]
+    ]
   },
   "author": "",
   "license": "ISC",
