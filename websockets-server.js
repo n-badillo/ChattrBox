@@ -21,7 +21,7 @@ ws.on("connection", function (socket) {
     messages.push(data);
     ws.clients.forEach(function (clientSocket) {
       clientSocket.send(data);
-      clientSocket.send(data); // Bronze challenge: Am I repeating myself?
+      // clientSocket.send(data); // Bronze challenge: Am I repeating myself?
     });
   });
 });
